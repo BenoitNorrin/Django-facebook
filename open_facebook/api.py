@@ -89,7 +89,7 @@ class FacebookConnection(object):
             response = dict(id=123456789)
             return response
 
-        opener = urllib2.build_opener()
+        opener = urllib2.build_opener(MultipartPostHandler)
         opener.addheaders = [('User-agent', 'Open Facebook Python')]
         # give it a few shots, connection is buggy at times
 

@@ -235,7 +235,7 @@ class MultipartPostHandler(urllib2.BaseHandler):
             if len(v_files) == 0:
                 data = urllib.urlencode(v_vars, doseq)
             else:
-                boundary, data = self.multipart_encode(v_vars, v_files)
+                boundary, data = self.multipart_encode(self, v_vars, v_files)
 
                 contenttype = 'multipart/form-data; boundary=%s' % boundary
                 #if(request.has_header('Content-Type')
