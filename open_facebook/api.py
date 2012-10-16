@@ -35,7 +35,7 @@ Currently that would be a bad idea though because of maintenance
 from django.http import QueryDict
 from django_facebook import settings as facebook_settings
 from open_facebook import exceptions as facebook_exceptions
-from open_facebook.utils import json, encode_params, send_warning, memoized
+from open_facebook.utils import json, encode_params, send_warning, memoized, MultipartPostHandler
 import logging
 import urllib
 import urllib2
@@ -106,8 +106,11 @@ class FacebookConnection(object):
                 try:
                     # For older python versions you could leave out the timeout
                     # response_file = opener.open(url, post_string)
-                    response_file = opener.open(url, post_string,
-                                                timeout=timeout)
+                    if post_data and "source" in post_data:
+                        response_file = opener.open(url, post_data, timeout=timeout)
+                    else:
+                        response_file = opener.open(url, post_string, timeout=timeout)
+                        
                 except (urllib2.HTTPError,), e:
                     # Facebook sents error codes for many of their flows
                     # we still want the json to allow for proper handling
